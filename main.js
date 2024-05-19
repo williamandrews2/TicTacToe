@@ -15,11 +15,21 @@ const gameboard = function () {
     [0, 0, 0],
   ];
 
-  // row, column, player number
-  const updateGameboard = function (r, c, player) {
-    gameboardArray[r][c] = player;
-    checkWinner();
-    displayArray();
+  // row, column, player ID
+  const updateGameboard = function (r, c, playerID) {
+    // Check if the cell is occupied.
+    if (gameboardArray[r][c] === 0) {
+      gameboardArray[r][c] = playerID;
+      const winner = checkWinner();
+      if (winner) {
+        console.log(`Player ${winner} wins!`);
+      } else {
+        console.log("No winner yet.");
+      }
+      displayArray();
+    } else {
+      console.log("Please choose another cell.");
+    }
   };
 
   const checkWinner = function () {
