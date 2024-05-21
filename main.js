@@ -1,13 +1,6 @@
-// There needs to be objects for the following:
-
-// Gameboard - to store array
-// Players
-// displayController - to control the flow of the game
-
 const container = document.querySelector("#gameboard");
 
-// The gameboard is wrapped in an IIFE so it cannot be reused
-// to make multiple instances.
+// The gameboard and gameController are wrapped in IIFEs.
 const gameboard = function () {
   let gameboardArray = [
     [0, 0, 0],
@@ -91,7 +84,31 @@ const gameboard = function () {
   return { updateGameboard, checkWinner, displayArray };
 };
 
-// Create instance of a gameboard
-const myGameboard = gameboard();
+// Game controller to handle the logic of the game.
+const gameController = function () {
+  const players = [createPlayer("Bob"), createPlayer("Sue")];
+  let currentPlayerIndex = 0;
 
-myGameboard.updateGameboard(1, 1, 1);
+  const switchPlayer = function () {
+    // Will always return 0 or 1 assuming the "players" array has length of 2.
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+  };
+
+  const playRound = function () {
+    myGameboard.updateGameboard(1, 1, players[currentPlayerIndex].playerName);
+    console.log(players[currentPlayerIndex].playerName);
+    switchPlayer();
+  };
+
+  return { switchPlayer, playRound };
+};
+
+// Factory function for creating players.
+function createPlayer(name) {
+  const playerName = name;
+  return { playerName };
+}
+
+// Create instances of the objects.
+const myGameboard = gameboard();
+const controller = gameController();
