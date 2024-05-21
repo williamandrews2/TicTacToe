@@ -11,4 +11,7 @@ This project is a classic Tic-Tac-Toe game built with HTML, CSS, and JavaScript.
 - DOM Interaction
 - User-Friendly Interface
 
-## Features
+## Current bugs
+
+- Players switch when selecting an already filled square, they should not switch yet as their decision has not been populated.
+- Game is still ongoing after a player has won.

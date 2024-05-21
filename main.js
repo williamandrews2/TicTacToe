@@ -14,6 +14,7 @@ const gameboard = function () {
     if (gameboardArray[r][c] === 0) {
       gameboardArray[r][c] = playerID;
       const winner = checkWinner();
+      // Might not need the if else statement later...
       if (winner) {
         console.log(`Player ${winner} wins!`);
       } else {
@@ -90,17 +91,23 @@ const gameController = function () {
   let currentPlayerIndex = 0;
 
   const switchPlayer = function () {
-    // Will always return 0 or 1 assuming the "players" array has length of 2.
     currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
   };
 
-  const playRound = function () {
-    myGameboard.updateGameboard(1, 1, players[currentPlayerIndex].playerName);
+  const getCurrentPlayer = function () {
+    return players[currentPlayerIndex].playerName;
+  };
+
+  const playRound = function (r, c) {
+    const currentPlayer = getCurrentPlayer();
+    const result = myGameboard.updateGameboard(r, c, currentPlayer);
+
     console.log(players[currentPlayerIndex].playerName);
+
     switchPlayer();
   };
 
-  return { switchPlayer, playRound };
+  return { switchPlayer, getCurrentPlayer, playRound };
 };
 
 // Factory function for creating players.
