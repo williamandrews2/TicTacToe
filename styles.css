@@ -43,3 +43,12 @@ html {
   color: white;
   font-size: 3rem;
 }
+
+.highlight {
+  border: 8px solid yellow;
+}
+
+.name {
+  border-radius: 8px;
+  padding: 10px 15px;
+}

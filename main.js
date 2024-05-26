@@ -1,5 +1,8 @@
 const container = document.querySelector("#gameboard");
 const cells = document.querySelectorAll(".cell");
+const playerX = document.querySelector("#player-x");
+const playerO = document.querySelector("#player-o");
+
 const notificationContainer = document.createElement("div");
 notificationContainer.id = "notification-container";
 
@@ -17,15 +20,12 @@ const gameboard = function () {
     if (gameboardArray[r][c] === 0) {
       gameboardArray[r][c] = playerID;
       const winner = checkWinner();
-
       if (winner) {
         removeCellEventListeners();
         handleWinner(winner);
-        console.log(`${winner} wins!`);
       }
-      // displayArray();
     } else {
-      console.log("Please choose another cell.");
+      alert("Please choose another cell.");
     }
   };
 
@@ -46,7 +46,6 @@ const gameboard = function () {
         gameboardArray[i][0] === gameboardArray[i][1] &&
         gameboardArray[i][0] === gameboardArray[i][2]
       ) {
-        console.log("We have a winner in the rows!");
         return gameboardArray[i][0];
       }
     }
@@ -58,7 +57,6 @@ const gameboard = function () {
         gameboardArray[0][i] === gameboardArray[1][i] &&
         gameboardArray[0][i] === gameboardArray[2][i]
       ) {
-        console.log("We have a winner in the columns!");
         return gameboardArray[0][i];
       }
     }
@@ -69,7 +67,6 @@ const gameboard = function () {
       gameboardArray[0][0] === gameboardArray[1][1] &&
       gameboardArray[0][0] === gameboardArray[2][2]
     ) {
-      console.log("We have a winner in the main diagonal!");
       return gameboardArray[0][0];
     }
 
@@ -79,7 +76,6 @@ const gameboard = function () {
       gameboardArray[0][2] === gameboardArray[1][1] &&
       gameboardArray[0][2] === gameboardArray[2][0]
     ) {
-      console.log("We have a winner in the anti-diagonal!");
       return gameboardArray[0][2];
     }
 
@@ -87,21 +83,19 @@ const gameboard = function () {
     return null;
   };
 
-  // test functions, delete later
-  const displayArray = function () {
-    console.log(gameboardArray);
-  };
-
-  return { updateGameboard, checkWinner, displayArray };
+  return { updateGameboard, checkWinner };
 };
 
 // Game controller to handle the logic of the game.
 const gameController = function () {
-  const players = [createPlayer("Player 1"), createPlayer("Player 2")];
+  const players = [createPlayer("Player O"), createPlayer("Player X")];
   let currentPlayerIndex = 0;
+
+  updatePlayerHighlight();
 
   const switchPlayer = function () {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    updatePlayerHighlight();
   };
 
   const getCurrentPlayer = function () {
@@ -110,7 +104,7 @@ const gameController = function () {
 
   const playRound = function (r, c) {
     const currentPlayer = getCurrentPlayer();
-    const result = myGameboard.updateGameboard(r, c, currentPlayer);
+    myGameboard.updateGameboard(r, c, currentPlayer);
     switchPlayer();
   };
 
@@ -121,6 +115,16 @@ const gameController = function () {
       return "O";
     }
   };
+
+  function updatePlayerHighlight() {
+    if (currentPlayerIndex === 0) {
+      playerO.classList.add("highlight");
+      playerX.classList.remove("highlight");
+    } else {
+      playerX.classList.add("highlight");
+      playerO.classList.remove("highlight");
+    }
+  }
 
   return { switchPlayer, getCurrentPlayer, playRound, updateCell };
 };
