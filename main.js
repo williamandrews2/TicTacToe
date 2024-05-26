@@ -1,4 +1,7 @@
 const container = document.querySelector("#gameboard");
+const cells = document.querySelectorAll(".cell");
+const notificationContainer = document.createElement("div");
+notificationContainer.id = "notification-container";
 
 // The gameboard and gameController are wrapped in IIFEs.
 const gameboard = function () {
@@ -14,17 +17,24 @@ const gameboard = function () {
     if (gameboardArray[r][c] === 0) {
       gameboardArray[r][c] = playerID;
       const winner = checkWinner();
-      // Might not need the if else statement later...
+
       if (winner) {
-        console.log(`Player ${winner} wins!`);
-      } else {
-        console.log("No winner yet.");
+        removeCellEventListeners();
+        handleWinner(winner);
+        console.log(`${winner} wins!`);
       }
-      displayArray();
+      // displayArray();
     } else {
       console.log("Please choose another cell.");
     }
   };
+
+  function handleWinner(winner) {
+    notificationContainer.innerHTML = winner + " wins!";
+    document
+      .getElementById("main-container")
+      .appendChild(notificationContainer);
+  }
 
   const checkWinner = function () {
     const gridSize = 3;
@@ -101,9 +111,6 @@ const gameController = function () {
   const playRound = function (r, c) {
     const currentPlayer = getCurrentPlayer();
     const result = myGameboard.updateGameboard(r, c, currentPlayer);
-
-    console.log(players[currentPlayerIndex].playerName);
-
     switchPlayer();
   };
 
@@ -118,7 +125,7 @@ const gameController = function () {
   return { switchPlayer, getCurrentPlayer, playRound, updateCell };
 };
 
-// Factory function for creating players.
+// Function for creating players.
 function createPlayer(name) {
   const playerName = name;
   return { playerName };
@@ -128,14 +135,20 @@ function createPlayer(name) {
 const myGameboard = gameboard();
 const controller = gameController();
 
-// Add event listeners for each of the cells on the board.
-const cells = document.querySelectorAll(".cell");
-cells.forEach((cell) => {
-  cell.addEventListener("click", function () {
-    // Import the row and col data attributes.
-    const row = parseInt(cell.getAttribute("data-row"));
-    const col = parseInt(cell.getAttribute("data-col"));
-    controller.playRound(row, col);
-    cell.innerHTML = controller.updateCell();
+// Event listeners for each of the cells on the board.
+const handleCellClick = function () {
+  const row = parseInt(this.getAttribute("data-row"));
+  const col = parseInt(this.getAttribute("data-col"));
+  controller.playRound(row, col);
+  this.innerHTML = controller.updateCell();
+};
+
+function removeCellEventListeners() {
+  cells.forEach((cell) => {
+    cell.removeEventListener("click", handleCellClick);
   });
+}
+
+cells.forEach((cell) => {
+  cell.addEventListener("click", handleCellClick);
 });

@@ -33,3 +33,13 @@ html {
   border: 2px solid white;
   cursor: pointer;
 }
+
+#player-names,
+#notification-container {
+  display: flex;
+  width: 100%;
+  padding: 40px 0px;
+  justify-content: space-around;
+  color: white;
+  font-size: 3rem;
+}
