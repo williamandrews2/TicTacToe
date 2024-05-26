@@ -87,7 +87,7 @@ const gameboard = function () {
 
 // Game controller to handle the logic of the game.
 const gameController = function () {
-  const players = [createPlayer("Bob"), createPlayer("Sue")];
+  const players = [createPlayer("Player 1"), createPlayer("Player 2")];
   let currentPlayerIndex = 0;
 
   const switchPlayer = function () {
@@ -107,7 +107,15 @@ const gameController = function () {
     switchPlayer();
   };
 
-  return { switchPlayer, getCurrentPlayer, playRound };
+  const updateCell = function (r, c) {
+    if (currentPlayerIndex === 0) {
+      return "X";
+    } else {
+      return "O";
+    }
+  };
+
+  return { switchPlayer, getCurrentPlayer, playRound, updateCell };
 };
 
 // Factory function for creating players.
@@ -119,3 +127,15 @@ function createPlayer(name) {
 // Create instances of the objects.
 const myGameboard = gameboard();
 const controller = gameController();
+
+// Add event listeners for each of the cells on the board.
+const cells = document.querySelectorAll(".cell");
+cells.forEach((cell) => {
+  cell.addEventListener("click", function () {
+    // Import the row and col data attributes.
+    const row = parseInt(cell.getAttribute("data-row"));
+    const col = parseInt(cell.getAttribute("data-col"));
+    controller.playRound(row, col);
+    cell.innerHTML = controller.updateCell();
+  });
+});
