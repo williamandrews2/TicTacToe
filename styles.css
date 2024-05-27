@@ -38,10 +38,15 @@ html {
 #notification-container {
   display: flex;
   width: 100%;
-  padding: 40px 0px;
+  padding: 20px 0px;
   justify-content: space-around;
   color: white;
   font-size: 3rem;
+}
+
+#notification-container {
+  font-size: 5rem;
+  color: lime;
 }
 
 .highlight {
@@ -51,4 +56,15 @@ html {
 .name {
   border-radius: 8px;
   padding: 10px 15px;
+}
+
+#play-again-button {
+  padding: 16px 20px;
+  border: none;
+  border-radius: 16px;
+  background-color: rgb(0, 213, 0);
+  cursor: pointer;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
 }

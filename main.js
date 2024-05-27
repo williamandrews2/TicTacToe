@@ -6,6 +6,10 @@ const playerO = document.querySelector("#player-o");
 const notificationContainer = document.createElement("div");
 notificationContainer.id = "notification-container";
 
+const playAgain = document.createElement("button");
+playAgain.innerHTML = "Play again!";
+playAgain.id = "play-again-button";
+
 // The gameboard and gameController are wrapped in IIFEs.
 const gameboard = function () {
   let gameboardArray = [
@@ -34,6 +38,8 @@ const gameboard = function () {
     document
       .getElementById("main-container")
       .appendChild(notificationContainer);
+
+    document.getElementById("main-container").appendChild(playAgain);
   }
 
   const checkWinner = function () {
@@ -155,4 +161,8 @@ function removeCellEventListeners() {
 
 cells.forEach((cell) => {
   cell.addEventListener("click", handleCellClick);
+});
+
+playAgain.addEventListener("click", () => {
+  location.reload();
 });
