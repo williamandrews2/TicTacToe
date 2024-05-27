@@ -1,6 +1,7 @@
 html {
-  background: linear-gradient(to right, purple, rgb(255, 85, 0));
+  background: linear-gradient(to right, purple, rgb(103, 136, 253));
   font-family: "Poppins", sans-serif;
+  --win-color: rgb(42, 188, 255);
 }
 
 #main-container {
@@ -46,7 +47,8 @@ html {
 
 #notification-container {
   font-size: 5rem;
-  color: lime;
+  color: var(--win-color);
+  text-align: center;
 }
 
 .highlight {
@@ -56,15 +58,26 @@ html {
 .name {
   border-radius: 8px;
   padding: 10px 15px;
+  text-align: center;
 }
 
 #play-again-button {
   padding: 16px 20px;
   border: none;
   border-radius: 16px;
-  background-color: rgb(0, 213, 0);
+  background-color: var(--win-color);
   cursor: pointer;
   color: white;
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+@media (min-width: 320px) and (max-width: 999px) {
+  .cell {
+    height: 12vh;
+  }
+  #player-names,
+  #notification-container {
+    font-size: 3rem;
+  }
 }
