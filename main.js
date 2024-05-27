@@ -25,10 +25,10 @@ const gameboard = function () {
     // Check if the cell is occupied.
     if (gameboardArray[r][c] === 0) {
       gameboardArray[r][c] = playerID;
-      const winner = checkWinner();
-      if (winner) {
+      const winnerInfo = checkWinner();
+      if (winnerInfo) {
         removeCellEventListeners();
-        handleWinner(winner);
+        handleWinner(winnerInfo.winner, winnerInfo.winningCells);
       } else if (isBoardFull(gameboardArray)) {
         handleDraw();
       }
@@ -37,11 +37,21 @@ const gameboard = function () {
     return false; // Move was unsuccessful.
   };
 
-  function handleWinner(winner) {
+  function turnWinnerGreen(winningCells) {
+    winningCells.forEach(([row, col]) => {
+      const cell = document.querySelector(
+        `.cell[data-row='${row}'][data-col='${col}']`
+      );
+      cell.classList.add("turn-green");
+    });
+  }
+
+  function handleWinner(winner, winningCells) {
     notificationContainer.innerHTML = winner + " wins!";
     document
       .getElementById("main-container")
       .append(notificationContainer, playAgain);
+    turnWinnerGreen(winningCells);
   }
 
   function handleDraw() {
@@ -66,7 +76,14 @@ const gameboard = function () {
         gameboardArray[i][0] === gameboardArray[i][1] &&
         gameboardArray[i][0] === gameboardArray[i][2]
       ) {
-        return gameboardArray[i][0];
+        return {
+          winner: gameboardArray[i][0],
+          winningCells: [
+            [i, 0],
+            [i, 1],
+            [i, 2],
+          ],
+        };
       }
     }
 
@@ -77,7 +94,14 @@ const gameboard = function () {
         gameboardArray[0][i] === gameboardArray[1][i] &&
         gameboardArray[0][i] === gameboardArray[2][i]
       ) {
-        return gameboardArray[0][i];
+        return {
+          winner: gameboardArray[0][i],
+          winningCells: [
+            [0, i],
+            [1, i],
+            [2, i],
+          ],
+        };
       }
     }
 
@@ -87,7 +111,14 @@ const gameboard = function () {
       gameboardArray[0][0] === gameboardArray[1][1] &&
       gameboardArray[0][0] === gameboardArray[2][2]
     ) {
-      return gameboardArray[0][0];
+      return {
+        winner: gameboardArray[0][0],
+        winningCells: [
+          [0, 0],
+          [1, 1],
+          [2, 2],
+        ],
+      };
     }
 
     // Check anti-diagonal
@@ -96,7 +127,14 @@ const gameboard = function () {
       gameboardArray[0][2] === gameboardArray[1][1] &&
       gameboardArray[0][2] === gameboardArray[2][0]
     ) {
-      return gameboardArray[0][2];
+      return {
+        winner: gameboardArray[0][2],
+        winningCells: [
+          [0, 2],
+          [1, 1],
+          [2, 0],
+        ],
+      };
     }
 
     // No winner

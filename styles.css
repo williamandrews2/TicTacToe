@@ -47,12 +47,17 @@ html {
 
 #notification-container {
   font-size: 5rem;
-  color: var(--win-color);
+  font-weight: bolder;
+  color: lime;
   text-align: center;
 }
 
 .highlight {
   border: 8px solid yellow;
+}
+
+.turn-green {
+  color: lime;
 }
 
 .name {
