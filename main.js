@@ -27,6 +27,8 @@ const gameboard = function () {
       if (winner) {
         removeCellEventListeners();
         handleWinner(winner);
+      } else if (isBoardFull(gameboardArray)) {
+        handleDraw();
       }
     } else {
       alert("Please choose another cell.");
@@ -38,8 +40,23 @@ const gameboard = function () {
     document
       .getElementById("main-container")
       .appendChild(notificationContainer);
-
     document.getElementById("main-container").appendChild(playAgain);
+  }
+
+  function handleDraw() {
+    notificationContainer.innerHTML = "It's a draw!";
+    document
+      .getElementById("main-container")
+      .appendChild(notificationContainer);
+    document.getElementById("main-container").appendChild(playAgain);
+  }
+
+  function isBoardFull(board) {
+    // Flatten the 2D array to a 1D array
+    const flattenedBoard = board.flat();
+
+    // Check if there is any cell with the value 0
+    return flattenedBoard.every((cell) => cell !== 0);
   }
 
   const checkWinner = function () {
