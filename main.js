@@ -1,11 +1,14 @@
+// Import components from HTML.
 const container = document.querySelector("#gameboard");
 const cells = document.querySelectorAll(".cell");
 const playerX = document.querySelector("#player-x");
 const playerO = document.querySelector("#player-o");
 
+// Notification container that alerts the outcome of the game.
 const notificationContainer = document.createElement("div");
 notificationContainer.id = "notification-container";
 
+// Play again button.
 const playAgain = document.createElement("button");
 playAgain.innerHTML = "Play again!";
 playAgain.id = "play-again-button";
@@ -18,7 +21,6 @@ const gameboard = function () {
     [0, 0, 0],
   ];
 
-  // row, column, player ID
   const updateGameboard = function (r, c, playerID) {
     // Check if the cell is occupied.
     if (gameboardArray[r][c] === 0) {
@@ -31,33 +33,27 @@ const gameboard = function () {
         handleDraw();
       }
       return true; // Move was successful.
-    } else {
-      return false; // Move was unsuccessful.
     }
+    return false; // Move was unsuccessful.
   };
 
   function handleWinner(winner) {
     notificationContainer.innerHTML = winner + " wins!";
     document
       .getElementById("main-container")
-      .appendChild(notificationContainer);
-    document.getElementById("main-container").appendChild(playAgain);
+      .append(notificationContainer, playAgain);
   }
 
   function handleDraw() {
     notificationContainer.innerHTML = "It's a draw!";
     document
       .getElementById("main-container")
-      .appendChild(notificationContainer);
-    document.getElementById("main-container").appendChild(playAgain);
+      .append(notificationContainer, playAgain);
   }
 
   function isBoardFull(board) {
-    // Flatten the 2D array to a 1D array
-    const flattenedBoard = board.flat();
-
-    // Check if there is any cell with the value 0
-    return flattenedBoard.every((cell) => cell !== 0);
+    // Flatten the 2D array to a 1D array and check if there is any cell with the value 0
+    return board.flat().every((cell) => cell !== 0);
   }
 
   const checkWinner = function () {
@@ -155,17 +151,12 @@ const gameController = function () {
   return { switchPlayer, getCurrentPlayer, playRound, updateCell };
 };
 
-// Function for creating players.
+// Function for creating the players.
 function createPlayer(name) {
   const playerName = name;
   return { playerName };
 }
 
-// Create instances of the objects.
-const myGameboard = gameboard();
-const controller = gameController();
-
-// Event listeners for each of the cells on the board.
 const handleCellClick = function () {
   const row = parseInt(this.getAttribute("data-row"));
   const col = parseInt(this.getAttribute("data-col"));
@@ -179,6 +170,7 @@ const handleCellClick = function () {
   this.innerHTML = controller.updateCell();
 };
 
+// Event listeners for gameboard and play again button.
 function removeCellEventListeners() {
   cells.forEach((cell) => {
     cell.removeEventListener("click", handleCellClick);
@@ -192,3 +184,7 @@ cells.forEach((cell) => {
 playAgain.addEventListener("click", () => {
   location.reload();
 });
+
+// Create instances of the objects.
+const myGameboard = gameboard();
+const controller = gameController();
