@@ -13,6 +13,4 @@ This project is a classic Tic-Tac-Toe game built with HTML, CSS, and JavaScript.
 
 ## Current bugs
 
-- Players switch when selecting an already filled square, they should not switch yet as their decision has not been populated.
-- Need a check to see if the game is over even if it is a draw.
-- Else statement in line 24 is faulty.
+- None known at this time.

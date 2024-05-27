@@ -30,8 +30,9 @@ const gameboard = function () {
       } else if (isBoardFull(gameboardArray)) {
         handleDraw();
       }
+      return true; // Move was successful.
     } else {
-      alert("Please choose another cell.");
+      return false; // Move was unsuccessful.
     }
   };
 
@@ -127,8 +128,10 @@ const gameController = function () {
 
   const playRound = function (r, c) {
     const currentPlayer = getCurrentPlayer();
-    myGameboard.updateGameboard(r, c, currentPlayer);
-    switchPlayer();
+    const moveSuccessful = myGameboard.updateGameboard(r, c, currentPlayer);
+    if (moveSuccessful) {
+      switchPlayer();
+    }
   };
 
   const updateCell = function (r, c) {
@@ -166,6 +169,12 @@ const controller = gameController();
 const handleCellClick = function () {
   const row = parseInt(this.getAttribute("data-row"));
   const col = parseInt(this.getAttribute("data-col"));
+
+  if (this.innerHTML !== "") {
+    alert("This space is alrady taken! Please choose another space.");
+    return;
+  }
+
   controller.playRound(row, col);
   this.innerHTML = controller.updateCell();
 };
